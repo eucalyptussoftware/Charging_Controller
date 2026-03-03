@@ -1,0 +1,46 @@
+syntax = "proto3";
+package vhal_proto;
+import "google/protobuf/empty.proto";
+option java_multiple_files = true;
+
+message VehiclePropValue {
+    int32 prop = 1;
+    int32 value_type = 2;
+    int64 timestamp = 3;
+    int32 area_id = 4;
+    repeated sint32 int32_values = 5;
+    repeated int64 int64_values = 6;
+    repeated float float_values = 7;
+    string string_value = 8;
+    bytes bytes_value = 9;
+    int32 status = 10;
+}
+
+message WrappedVehiclePropValue {
+    VehiclePropValue value = 1;
+    bool update_status = 2;
+}
+
+message WrappedVehiclePropValues {
+    repeated WrappedVehiclePropValue values = 1;
+}
+
+message VehiclePropConfig {
+    int32 prop = 1;
+    int32 access = 2;
+    int32 change_mode = 3;
+    repeated int32 config_array = 4;
+    string config_string = 5;
+    float min_sample_rate = 6;
+    float max_sample_rate = 7;
+}
+
+message VehicleHalCallStatus {
+    int32 status_code = 1;
+}
+
+service VehicleServer {
+    rpc SetProperty(stream WrappedVehiclePropValue) returns (stream VehicleHalCallStatus);
+    rpc StartPropertyValuesStream(google.protobuf.Empty) returns (stream WrappedVehiclePropValues);
+    rpc SendAllPropertyValuesToStream(google.protobuf.Empty) returns (google.protobuf.Empty);
+}
