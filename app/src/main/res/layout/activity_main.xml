@@ -1,0 +1,1024 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1a1a2e">
+
+    <TextView
+        android:id="@+id/tv_charging_status_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Not Charging"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/bg_status_not_charging"
+        android:elevation="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="36dp"
+        android:gravity="top"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <!-- LEFT MAIN: Power status columns -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:orientation="horizontal"
+            android:gravity="top"
+            android:clipChildren="false"
+            android:clipToPadding="false">
+
+            <!-- COL 1: Bluetooth Data -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="top|center_horizontal"
+                android:paddingEnd="18dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:text="Live Power\n(Bluetooth)"
+                    android:textSize="30sp"
+                    android:textColor="#888888"
+                    android:textStyle="bold"
+                    android:gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="12dp"/>
+
+                <TextView
+                    android:id="@+id/tv_power"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:text="-- W"
+                    android:textSize="72sp"
+                    android:textColor="#00d4ff"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginBottom="18dp"/>
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="Idle"
+                    android:textSize="27sp"
+                    android:textColor="#666666"
+                    android:gravity="center"
+                    android:layout_marginBottom="36dp"/>
+
+                <!-- BLE Service enabled toggle (Vertical) -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:paddingBottom="20dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Service Enabled"
+                        android:textSize="27sp"
+                        android:textColor="#cccccc"
+                        android:layout_marginBottom="12dp"/>
+
+                    <Switch
+                        android:id="@+id/sw_enabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleX="1.5"
+                        android:scaleY="1.5"
+                        android:checked="true"/>
+                </LinearLayout>
+
+                <!-- Pairing UI -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="12dp">
+
+                    <EditText
+                        android:id="@+id/et_pin"
+                        android:layout_width="150dp"
+                        android:layout_height="60dp"
+                        android:inputType="number"
+                        android:textSize="27sp"
+                        android:textColor="#00d4ff"
+                        android:textStyle="bold"
+                        android:hint="PIN"
+                        android:textColorHint="#444466"
+                        android:gravity="center"
+                        android:background="@drawable/time_button_bg"
+                        android:maxLength="10"/>
+
+                    <TextView
+                        android:id="@+id/btn_pair"
+                        android:layout_width="105dp"
+                        android:layout_height="60dp"
+                        android:text="PAIR"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:textColor="#ffffff"
+                        android:gravity="center"
+                        android:background="@drawable/apply_button_bg"
+                        android:layout_marginStart="12dp"
+                        android:clickable="true"
+                        android:focusable="true"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="1.5dp"
+                android:layout_height="match_parent"
+                android:background="#333355"
+                android:layout_marginHorizontal="12dp"/>
+
+            <!-- COL 2: MQTT Data -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="top|center_horizontal"
+                android:paddingStart="18dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:text="Live Power\n(MQTT)"
+                    android:textSize="30sp"
+                    android:textColor="#888888"
+                    android:textStyle="bold"
+                    android:gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="12dp"/>
+
+                <TextView
+                    android:id="@+id/tv_main_mqtt_power"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:text="-- W"
+                    android:textSize="72sp"
+                    android:textColor="#aa00ff"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginBottom="18dp"/>
+
+                <TextView
+                    android:id="@+id/tv_mqtt_status_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="Disconnected"
+                    android:textSize="21sp"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:background="@drawable/bg_mqtt_status_disconnected"
+                    android:layout_marginBottom="36dp"/>
+
+                <!-- MQTT Service enabled toggle (Vertical) -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:paddingBottom="20dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Service Enabled"
+                        android:textSize="27sp"
+                        android:textColor="#cccccc"
+                        android:layout_marginBottom="12dp"/>
+
+                    <Switch
+                        android:id="@+id/sw_mqtt_enabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleX="1.5"
+                        android:scaleY="1.5"
+                        android:checked="false"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/btn_mqtt_dashboard"
+                    android:layout_width="210dp"
+                    android:layout_height="60dp"
+                    android:text="SETTINGS"
+                    android:textSize="21sp"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:background="@drawable/cyan_button_bg"
+                    android:layout_marginTop="12dp"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+            </LinearLayout>
+
+            <!-- Divider before Smart Charging -->
+            <View
+                android:layout_width="1.5dp"
+                android:layout_height="match_parent"
+                android:background="#333355"
+                android:layout_marginHorizontal="12dp"/>
+
+            <!-- COL 3: Smart Charging Controller -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="top|center_horizontal"
+                android:paddingStart="18dp"
+                android:paddingEnd="12dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:text="Smart\nCharging"
+                    android:textSize="30sp"
+                    android:textColor="#888888"
+                    android:textStyle="bold"
+                    android:gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Current charging amps display -->
+                <TextView
+                    android:id="@+id/tv_charging_amps"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:text="5 A"
+                    android:textSize="72sp"
+                    android:textColor="#00ff88"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginBottom="18dp"/>
+
+                <!-- Estimated wattage -->
+                <TextView
+                    android:id="@+id/tv_charging_watts"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="1200 W"
+                    android:textSize="27sp"
+                    android:textColor="#666666"
+                    android:gravity="center"
+                    android:layout_marginBottom="36dp"/>
+
+                <!-- Enable toggle (Vertical) -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:paddingBottom="20dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Service Enabled"
+                        android:textSize="27sp"
+                        android:textColor="#cccccc"
+                        android:layout_marginBottom="12dp"/>
+
+                    <Switch
+                        android:id="@+id/sw_charging_enabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleX="1.5"
+                        android:scaleY="1.5"
+                        android:checked="false"/>
+                </LinearLayout>
+
+                <!-- Over-consumption tolerance -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tolerance"
+                        android:textSize="24sp"
+                        android:textColor="#cccccc"
+                        android:layout_marginEnd="12dp"/>
+
+                    <Spinner
+                        android:id="@+id/spinner_over_consumption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="90dp"
+                        android:background="@drawable/time_button_bg"
+                        android:paddingStart="18dp"
+                        android:paddingEnd="18dp"/>
+                </LinearLayout>
+
+                <!-- Safety Timeout Toggle -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="12dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Fallback on no data for 5 min"
+                        android:textSize="27sp"
+                        android:textColor="#cccccc"/>
+
+                    <Spinner
+                        android:id="@+id/spinner_safety_current"
+                        android:layout_width="wrap_content"
+                        android:layout_height="90dp"
+                        android:background="@drawable/time_button_bg"
+                        android:paddingStart="18dp"
+                        android:paddingEnd="18dp"
+                        android:layout_marginEnd="12dp"/>
+
+                    <Switch
+                        android:id="@+id/sw_safety_timeout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleX="1.5"
+                        android:scaleY="1.5"
+                        android:checked="true"/>
+                </LinearLayout>
+
+                <!-- Eco Mode Toggle -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="12dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Eco Mode (Stop > 100W)"
+                        android:textSize="27sp"
+                        android:textColor="#cccccc"/>
+
+                    <Switch
+                        android:id="@+id/sw_eco_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleX="1.5"
+                        android:scaleY="1.5"
+                        android:checked="false"/>
+                </LinearLayout>
+
+                <!-- Eco Mode Tolerance Options -->
+                <LinearLayout
+                    android:id="@+id/layout_eco_tolerance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="12dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Stop Tolerance"
+                        android:textSize="27sp"
+                        android:textColor="#cccccc"/>
+
+                    <Spinner
+                        android:id="@+id/spinner_eco_tolerance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="90dp"
+                        android:background="@drawable/time_button_bg"
+                        android:paddingStart="18dp"
+                        android:paddingEnd="18dp"
+                        android:layout_marginEnd="12dp"/>
+                </LinearLayout>
+
+                <!-- Eco Mode Schedule Options -->
+                <LinearLayout
+                    android:id="@+id/layout_eco_schedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="12dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:visibility="gone">
+
+                    <!-- Enable Eco Schedule Toggle -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Eco Schedule"
+                            android:textSize="27sp"
+                            android:textColor="#cccccc"/>
+
+                        <Switch
+                            android:id="@+id/sw_eco_schedule"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleX="1.5"
+                            android:scaleY="1.5"
+                            android:checked="false"/>
+                    </LinearLayout>
+
+                    <!-- Eco Schedule Time Pickers -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="From "
+                            android:textSize="27sp"
+                            android:textColor="#cccccc"/>
+
+                        <Spinner
+                            android:id="@+id/spinner_eco_start_hour"
+                            android:layout_width="wrap_content"
+                            android:layout_height="60dp"
+                            android:background="@drawable/time_button_bg"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" until "
+                            android:textSize="27sp"
+                            android:textColor="#cccccc"/>
+
+                        <Spinner
+                            android:id="@+id/spinner_eco_end_hour"
+                            android:layout_width="wrap_content"
+                            android:layout_height="60dp"
+                            android:background="@drawable/time_button_bg"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="24dp"
+                    android:paddingEnd="12dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+
+                    <TextView 
+                        android:id="@+id/tv_charge_battery" 
+                        android:layout_width="wrap_content" 
+                        android:layout_height="wrap_content" 
+                        android:text="Battery: --"
+                        android:textColor="#cccccc" 
+                        android:textSize="27sp"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:id="@+id/tv_charge_current_power" 
+                        android:layout_width="wrap_content" 
+                        android:layout_height="wrap_content" 
+                        android:text="Power: -- kW"
+                        android:textColor="#cccccc" 
+                        android:textSize="27sp"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView 
+                        android:id="@+id/tv_charge_work_current" 
+                        android:layout_width="wrap_content" 
+                        android:layout_height="wrap_content" 
+                        android:text="Work Current: -- A"
+                        android:textColor="#cccccc" 
+                        android:textSize="27sp"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView 
+                        android:id="@+id/tv_charge_plug_state" 
+                        android:layout_width="wrap_content" 
+                        android:layout_height="wrap_content" 
+                        android:text="Plug: --"
+                        android:textColor="#cccccc" 
+                        android:textSize="27sp"
+                        android:layout_marginBottom="12dp" />
+
+
+                    <TextView 
+                        android:id="@+id/tv_charge_voltage" 
+                        android:layout_width="wrap_content" 
+                        android:layout_height="wrap_content" 
+                        android:text="Voltage: --"
+                        android:textColor="#cccccc" 
+                        android:textSize="27sp" />
+                </LinearLayout>
+
+                <!-- Charging Current Adjuster -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="24dp"
+                    android:paddingTop="12dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+                    
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Charge Limit Override (temporary)"
+                        android:textSize="27sp"
+                        android:textColor="#cccccc"/>
+                        
+                    <Spinner
+                        android:id="@+id/spinner_chg_current"
+                        android:layout_width="wrap_content"
+                        android:layout_height="90dp"
+                        android:background="@drawable/time_button_bg"
+                        android:paddingStart="18dp"
+                        android:paddingEnd="18dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Vertical divider -->
+        <View
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            android:background="#333355"/>
+
+        <!-- RIGHT: Schedule settings -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:orientation="vertical"
+            android:gravity="top|center_horizontal"
+            android:paddingStart="36dp"
+            android:clipChildren="false"
+            android:clipToPadding="false">
+
+            <!-- Force Max Charge UI -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginBottom="36dp"
+                android:padding="12dp"
+                android:background="@drawable/day_button_bg">
+
+                <ToggleButton
+                    android:id="@+id/btn_force_max"
+                    android:layout_width="250dp"
+                    android:layout_height="60dp"
+                    android:textOff="Force Full Charge (24h)"
+                    android:textOn="FORCE MAX ACTIVE"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"
+                    android:background="@drawable/cyan_button_bg"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/tv_force_countdown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ends in 23:59"
+                    android:textSize="20sp"
+                    android:textColor="#ffaa00"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tv_force_end_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="at 14:30 Today"
+                    android:textSize="16sp"
+                    android:textColor="#cccccc"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SCHEDULE"
+                android:textSize="33sp"
+                android:textColor="#888888"
+                android:textStyle="bold"
+                android:layout_marginBottom="24dp"/>
+
+            <!-- Schedule Toggle -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginBottom="24dp"
+                android:paddingBottom="8dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Use Schedule"
+                    android:textSize="27sp"
+                    android:textColor="#cccccc"
+                    android:layout_marginBottom="12dp"/>
+
+                <Switch
+                    android:id="@+id/sw_schedule_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5"
+                    android:checked="true"/>
+            </LinearLayout>
+
+            <!-- Days of week — using plain TextViews styled as round day buttons -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="30dp">
+
+                <TextView
+                    android:id="@+id/day_mon"
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:text="M"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:background="@drawable/day_button_bg"
+                    android:layout_margin="6dp"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <TextView
+                    android:id="@+id/day_tue"
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:text="T"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:background="@drawable/day_button_bg"
+                    android:layout_margin="6dp"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <TextView
+                    android:id="@+id/day_wed"
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:text="W"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:background="@drawable/day_button_bg"
+                    android:layout_margin="6dp"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <TextView
+                    android:id="@+id/day_thu"
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:text="T"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:background="@drawable/day_button_bg"
+                    android:layout_margin="6dp"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <TextView
+                    android:id="@+id/day_fri"
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:text="F"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:background="@drawable/day_button_bg"
+                    android:layout_margin="6dp"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <TextView
+                    android:id="@+id/day_sat"
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:text="S"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:background="@drawable/day_button_bg"
+                    android:layout_margin="6dp"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <TextView
+                    android:id="@+id/day_sun"
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:text="S"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:background="@drawable/day_button_bg"
+                    android:layout_margin="6dp"
+                    android:clickable="true"
+                    android:focusable="true"/>
+            </LinearLayout>
+
+            <!-- Time range -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="From"
+                    android:textSize="30sp"
+                    android:textColor="#cccccc"
+                    android:layout_marginEnd="18dp"/>
+
+                <TextView
+                    android:id="@+id/btn_start_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="78dp"
+                    android:text="10:00"
+                    android:textSize="36sp"
+                    android:textStyle="bold"
+                    android:textColor="#00d4ff"
+                    android:gravity="center"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:background="@drawable/time_button_bg"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  to  "
+                    android:textSize="30sp"
+                    android:textColor="#cccccc"/>
+
+                <TextView
+                    android:id="@+id/btn_end_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="78dp"
+                    android:text="15:00"
+                    android:textSize="36sp"
+                    android:textStyle="bold"
+                    android:textColor="#00d4ff"
+                    android:gravity="center"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:background="@drawable/time_button_bg"
+                    android:clickable="true"
+                    android:focusable="true"/>
+            </LinearLayout>
+
+            <!-- Apply button -->
+            <TextView
+                android:id="@+id/btn_apply"
+                android:layout_width="300dp"
+                android:layout_height="84dp"
+                android:text="APPLY"
+                android:textSize="33sp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:gravity="center"
+                android:background="@drawable/apply_button_bg"
+                android:clickable="true"
+                android:focusable="true"/>
+                
+
+        <!-- Power Graph Header + Reset Button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="36dp"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="24H HISTORY"
+                    android:textSize="27sp"
+                    android:textColor="#888888"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/btn_reset_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="RESET DATA"
+                    android:textSize="21sp"
+                    android:textStyle="bold"
+                    android:textColor="#ff5555"
+                    android:padding="12dp"
+                    android:clickable="true"
+                    android:focusable="true"/>
+            </LinearLayout>
+
+
+
+            <com.yahooeu2k.dlb_charging.PowerGraphView
+                android:id="@+id/power_graph"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginEnd="24dp"
+                android:background="#222233"/>
+                
+            <!-- Amps Graph Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="36dp"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="AMPS HISTORY"
+                    android:textSize="27sp"
+                    android:textColor="#888888"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <com.yahooeu2k.dlb_charging.AmpsGraphView
+                android:id="@+id/amps_graph"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginEnd="24dp"
+                android:background="#222233"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    </ScrollView>
+
+        <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_build_info"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Log to file\n(dlp_charging_log.txt)"
+            android:textColor="#80FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="12dp"/>
+
+        <CheckBox
+            android:id="@+id/sw_file_logging"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="#00d4ff"
+            android:scaleX="1.5"
+            android:scaleY="1.5"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_build_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/build_info"
+        android:textColor="#80FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/btn_test_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:text="Test Data"
+        android:textColor="#80FFFFFF"
+        android:textSize="24sp"
+        android:padding="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

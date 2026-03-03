@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">DLB Charging</string>
+    <string name="build_info">Version: %1$s\nBuild Date: %2$s\nAuthor: TG @Yahooeu2k / EucalyptusSoftware Geely Mods</string>
+</resources>

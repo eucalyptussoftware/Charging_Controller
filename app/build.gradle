@@ -1,0 +1,255 @@
+plugins {
+    id 'com.android.application'
+    id 'com.google.protobuf'
+}
+
+android {
+    namespace 'com.yahooeu2k.dlb_charging'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.yahooeu2k.dlb_charging"
+        minSdk 26
+        targetSdk 30
+        versionCode 2
+        versionName "1.1.0"
+        buildConfigField "String", "BUILD_TIME_STRING", "\"${new Date().format("yyyy-MM-dd HH:mm:ss")}\""
+    }
+
+    buildTypes {
+        release {
+            // minifyEnabled true
+            // shrinkResources true
+            // proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
+
+    buildFeatures {
+        viewBinding true
+        buildConfig true
+    }
+
+    // Configure APK naming
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def versionName = defaultConfig.versionName
+            if (variant.buildType.name == 'debug') {
+                outputFileName = "DlbCharging_${versionName}_debug.apk"
+            } else {
+                outputFileName = "DlbCharging_${versionName}.apk"
+            }
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'META-INF/io.netty.versions.properties'
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+
+}
+
+dependencies {
+    implementation 'androidx.core:core:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.hivemq:hivemq-mqtt-client:1.3.3'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    // gRPC for VHAL
+    implementation 'io.grpc:grpc-okhttp:1.62.2'
+    implementation 'io.grpc:grpc-stub:1.62.2'
+    implementation 'io.grpc:grpc-protobuf-lite:1.62.2'
+    implementation 'com.google.protobuf:protobuf-javalite:3.21.7'
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
+
+    // Unit testing
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.11.1'
+    testImplementation 'androidx.test:core:1.5.0'
+    testImplementation 'androidx.test.ext:junit:1.1.5'
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.21.7'
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.62.2'
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java { option 'lite' }
+            }
+            task.plugins {
+                grpc { option 'lite' }
+            }
+        }
+    }
+}
+
+// Task to sign Debug APK with ApkSigner.jar
+task signApkWithApkSigner(type: Exec) {
+    dependsOn 'assembleDebug'
+    description = 'Sign debug APK with external ApkSigner.jar'
+
+    workingDir project.rootDir
+    commandLine 'java', '-jar', 'signing_keys/ApkSigner.jar', 'sign',
+                '--key', 'signing_keys/apkeasytool.pk8',
+                '--cert', 'signing_keys/TESTKEY.x509.pem',
+                "app/build/outputs/apk/debug/DlbCharging_${android.defaultConfig.versionName}_debug.apk"
+
+    doLast {
+        println "Debug APK signed with ApkSigner.jar"
+    }
+}
+
+// Task to sign Release APK with ApkSigner.jar
+task signReleaseApkWithApkSigner(type: Exec) {
+    dependsOn 'assembleRelease'
+    description = 'Sign release APK with external ApkSigner.jar'
+
+    workingDir project.rootDir
+    commandLine 'java', '-jar', 'signing_keys/ApkSigner.jar', 'sign',
+                '--key', 'signing_keys/apkeasytool.pk8',
+                '--cert', 'signing_keys/TESTKEY.x509.pem',
+                "app/build/outputs/apk/release/DlbCharging_${android.defaultConfig.versionName}.apk"
+
+    doLast {
+        println "Release APK signed with ApkSigner.jar"
+    }
+}
+
+// Task to build and sign Debug APK (using external ApkSigner)
+task buildAndSignDebug {
+    dependsOn 'signApkWithApkSigner'
+    description = 'Build debug APK and sign with external ApkSigner.jar'
+}
+
+// Task to build and sign Release APK (using external ApkSigner)
+task buildAndSignRelease {
+    dependsOn 'signReleaseApkWithApkSigner'
+    description = 'Build release APK and sign with external ApkSigner.jar'
+}
+
+// Task to build and sign both Debug and Release APKs
+task buildAndSignAll {
+    dependsOn 'signApkWithApkSigner', 'signReleaseApkWithApkSigner'
+    description = 'Build and sign all APK variants'
+}
+
+// Task to build release and copy to output directory
+task buildAndSignReleaseZip {
+    dependsOn 'signReleaseApkWithApkSigner'
+    description = 'Build release APK, sign it, copy to central build directory, and update install script'
+
+    doLast {
+        def versionName = android.defaultConfig.versionName
+        // Use double backslashes for Windows path in string
+        def buildDirPath = "C:\\\\Users\\\\Mike\\\\Documents\\\\Geely\\\\custom app\\\\dlb_charging_build"
+        def rootBuildDir = file(buildDirPath)
+        def versionDir = new File(rootBuildDir, versionName)
+
+        if (!versionDir.exists()) {
+            versionDir.mkdirs()
+            println "Created directory: $versionDir"
+        }
+
+        // Use a temporary directory for staging files
+        def stagingDir = new File(project.buildDir, "tmp/release_staging")
+        if (stagingDir.exists()) {
+            stagingDir.deleteDir()
+        }
+        stagingDir.mkdirs()
+
+        def apkName = "DlbCharging_${versionName}.apk"
+        // Note: 'signReleaseApkWithApkSigner' outputs to app/build/outputs/apk/release/
+        // We are in app/build.gradle, so project.file() resolves relative to the 'app' directory.
+        // Therefore ensuring we point to 'build/outputs/apk/release/' inside 'app'.
+        def sourceApkPath = "build/outputs/apk/release/${apkName}"
+        def sourceApk = project.file(sourceApkPath)
+        
+        if (!sourceApk.exists()) {
+             // Fallback: try checking relative to rootDir just in case
+             def rootSourceApk = new File(project.rootDir, "app/build/outputs/apk/release/${apkName}")
+             if (rootSourceApk.exists()) {
+                 sourceApk = rootSourceApk
+             } else {
+                 throw new GradleException("Release APK not found at: ${sourceApk.absolutePath} or ${rootSourceApk.absolutePath}")
+             }
+        }
+        
+        copy {
+            from sourceApk
+            into stagingDir
+        }
+        println "Copied APK to staging: $stagingDir"
+
+        // Copy and update the batch file from Template to Staging
+        def templateDir = new File(rootBuildDir, "Template")
+        def templateBatFile = new File(templateDir, "01_install_dlb_charging_app.bat")
+        def destBatFile = new File(stagingDir, "01_install_dlb_charging_app.bat")
+
+        if (templateBatFile.exists()) {
+            def batContent = templateBatFile.text
+            // Regex to replace 'dlb_charging_*.apk' with 'DlbCharging_${versionName}.apk'
+            def newBatContent = batContent.replaceAll(/dlb_charging_.*?\.apk|DlbCharging_.*?\.apk/, apkName)
+            
+            destBatFile.text = newBatContent
+            println "Created and updated 01_install_dlb_charging_app.bat in staging"
+        } else {
+             println "WARNING: Template batch file not found at $templateBatFile"
+        }
+
+        // Create Zip package
+        def zipName = "dlb_charging_${versionName}.zip"
+        def zipFile = new File(stagingDir, zipName)
+        
+        println "Creating zip: $zipFile"
+        
+        ant.zip(destfile: zipFile) {
+            fileset(dir: stagingDir) {
+                exclude(name: zipName)
+            }
+        }
+        println "Zip created successfully: ${zipFile.length()} bytes"
+
+        // Move Zip to Final Version Directory
+        def finalZip = new File(versionDir, zipName)
+        if (finalZip.exists()) {
+            finalZip.delete()
+        }
+        
+        if (zipFile.renameTo(finalZip)) {
+            println "Moved zip to: $finalZip"
+        } else {
+            // Fallback if rename fails
+            copy {
+                from zipFile
+                into versionDir
+            }
+            println "Copied zip to: $finalZip"
+        }
+        
+        // Cleanup Staging
+        stagingDir.deleteDir()
+        println "Cleaned up staging directory"
+    }
+}
